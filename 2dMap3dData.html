@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 100%"></div>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+option = null;
+
+// var data = [[0,0,5],[0,1,1],[0,2,0],[0,3,0],[0,4,0],[0,5,0],[0,6,0],[1,0,7],[1,1,0],[1,2,0],[1,3,0],[1,4,0],[1,5,0],[1,6,0],[2,0,1],[2,1,1],[2,2,0],[2,3,0],[2,4,0],[2,5,0],[2,6,0],[3,0,7],[3,1,3],[3,2,0],[3,3,0],[3,4,0],[3,5,0],[3,6,0],[4,0,1],[4,1,3],[4,2,0],[4,3,0],[4,4,0],[4,5,1],[4,6,0],[5,0,2],[5,1,1],[5,2,0],[5,3,3],[5,4,0],[5,5,0],[5,6,0],[6,0,1],[6,1,0],[6,2,0],[6,3,0],[6,4,0],[6,5,0],[6,6,0]];
+var data = [];
+var size = 20;
+var random;
+for (var i = 0; i < size; i++) {
+  for (var j = 0; j < size; j++) {
+    random = Math.floor(Math.random()*500);
+    // random = 0;
+    data.push([i,j,random]);
+  };
+};
+
+// 当 boxWidth 为 100 时，最宽为680 ，最窄为 409
+// 即经纬度转为像素后，若宽为 100 ，设置 boxWidth 为 100*100/409 （24.449877750611247 向下取舍为 24），设置 canvas 宽度为  100*680/409 （166.25916870415648 向上取舍为 167）
+option = {
+    tooltip: {
+      formatter:function(a){
+        
+      }
+    },
+    // visualMap: {
+    //     max: 20,
+    //     inRange: {
+    //         color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+    //     }
+    // },
+    visualMap : {
+      show : false,
+      right : 0,
+      top : 'center',
+      type : 'piecewise',
+      orient : 'vertical',
+      color : [ '#9c0a4e', '#d20040', '#ff401a', '#ffaa00', '#efdc31',
+      '#43ce17', '#b5b5b5' ],
+      pieces : [ {
+        gte : 300,
+        label : '严重污染'
+      }, {
+        gte : 200,
+        lt : 300,
+        label : '重度污染'
+      }, {
+        gte : 150,
+        lt : 200,
+        label : '中度污染'
+      }, {
+        gte : 100,
+        lt : 150,
+        label : '轻度污染'
+      }, {
+        gte : 50,
+        lt : 100,
+        label : '良'
+      }, {
+        gt : 0,
+        lt : 50,
+        label : '优'
+      }, {
+        lte : 0,
+        label : '-'
+      } ]
+    },
+    xAxis3D: {
+        type: 'category'
+    },
+    yAxis3D: {
+        type: 'category'
+    },
+    zAxis3D: {
+        type: 'value'
+    },
+    grid3D: {
+        boxWidth: 100,
+        boxDepth: 100,
+        // boxHeight: 0,
+        viewControl: {
+            // projection: 'orthographic'
+            rotateSensitivity: 0,  // 无法旋转
+            zoomSensitivity: 0,  // 无法缩放
+            panSensitivity: 0,  // 无法平移
+            alpha: 90,
+            beta: 90
+        },
+        light: {
+            main: {
+                intensity: 1.2,
+                shadow: true
+            },
+            ambient: {
+                intensity: 0.3
+            }
+        },
+        show: false
+    },
+    series: [{
+        type: 'bar3D',
+        data: data.map(function (item) {
+            return {
+                value: [item[0], item[1], item[2]],
+            }
+        }),
+        shading: 'lambert',
+
+        label: {
+          show: false,
+            textStyle: {
+                fontSize: 16,
+                borderWidth: 1
+            }
+        },
+
+        emphasis: {
+            label: {
+            show: false,
+                textStyle: {
+                    fontSize: 20,
+                    color: '#2e2e2e'
+                }
+            },
+            itemStyle: {
+                color: 'yellow'
+            }
+        }
+    }]
+};
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>

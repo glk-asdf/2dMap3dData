@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 100%"></div>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+       <!-- // <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script> -->
+       <!-- // <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script> -->
+       <!-- // <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script> -->
+       <!-- // <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script> -->
+       <!-- // <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script> -->
+       <!-- // <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script> -->
+       <!-- // <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script> -->
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+
+option = {
+    tooltip: {},
+    backgroundColor: '#fff',
+    visualMap: {
+        show: false,
+        dimension: 2,
+        min: 0,
+        max: 300,
+        inRange: {
+            color: [ '#43ce17', '#efdc31', '#ffaa00', '#ff401a','#d20040', '#9c0a4e' ]
+        }
+    },
+    xAxis3D: {
+        type: 'value'
+    },
+    yAxis3D: {
+        type: 'value'
+    },
+    zAxis3D: {
+        type: 'value'
+    },
+    grid3D: {
+        boxWidth: 100,
+        boxDepth: 100,
+        // boxHeight: 0,
+        viewControl: {
+            // projection: 'orthographic'
+            rotateSensitivity: 0,  // 无法旋转
+            zoomSensitivity: 0,  // 无法缩放
+            panSensitivity: 0,  // 无法平移
+            alpha: 90,
+            beta: 90
+        },
+        light: {
+            main: {
+                intensity: 1.2,
+                shadow: true
+            },
+            ambient: {
+                intensity: 0.3
+            }
+        },
+        show: false
+    },
+    series: [{
+        type: 'surface',
+        wireframe: {
+            show: false
+        },
+        shading: 'color',
+        equation: {
+            x: {
+                step: 0.05,
+                min: -3,
+                max: 3,
+            },
+            y: {
+                step: 0.05,
+                min: -3,
+                max: 3,
+            },
+            z: function (x, y) {
+                return Math.floor(Math.random()*300)
+            }
+        }
+    }]
+};
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>
