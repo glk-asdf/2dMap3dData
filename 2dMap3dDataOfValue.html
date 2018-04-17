@@ -18,6 +18,81 @@
 var dom = document.getElementById("container");
 var myChart = echarts.init(dom);
 
+// 当 boxWidth 为 100 时，最宽为680 ，最窄为 409
+// 即经纬度转为像素后，若宽为 100 ，设置 boxWidth 为 100*100/409 （24.449877750611247 向下取舍为 24），设置 canvas 宽度为  100*680/409 （166.25916870415648 向上取舍为 167）
+// 观赏用
+option2 = {
+    tooltip: {},
+    backgroundColor: '#fff',
+    visualMap: {
+        show: false,
+        dimension: 2,
+        // min: 0,
+        // max: 300,
+        min: -1,
+        max: 1,
+        inRange: {
+            color: [ '#43ce17', '#efdc31', '#ffaa00', '#ff401a','#d20040', '#9c0a4e' ]
+        }
+    },
+    xAxis3D: {
+        type: 'value'
+    },
+    yAxis3D: {
+        type: 'value'
+    },
+    zAxis3D: {
+        type: 'value'
+    },
+    grid3D: {
+        boxWidth: 100,
+        boxDepth: 100,
+        // boxHeight: 0,
+        viewControl: {
+            // projection: 'orthographic'
+            rotateSensitivity: 0,  // 无法旋转
+            zoomSensitivity: 0,  // 无法缩放
+            panSensitivity: 0,  // 无法平移
+            alpha: 90,
+            beta: 90
+        },
+        show: false
+    },
+    series: [{
+        type: 'surface',
+        wireframe: {
+            show: false
+        },
+        shading: 'color',
+        equation: {
+            // x: {
+            //     step: 1,
+            //     min: 0,
+            //     max: 99,
+            // },
+            // y: {
+            //     step: 1,
+            //     min: 0,
+            //     max: 99,
+            // },
+            x: {
+                step: 0.05,
+                min: -3,
+                max: 3,
+            },
+            y: {
+                step: 0.05,
+                min: -3,
+                max: 3,
+            },
+            z: function (x, y) {
+                // return Math.floor(Math.random()*300)
+                return Math.sin(x * x + y * y) * x / 3.14
+            }
+        }
+    }]
+};
+// 实际用
 option = {
     tooltip: {},
     backgroundColor: '#fff',
@@ -51,15 +126,6 @@ option = {
             alpha: 90,
             beta: 90
         },
-        light: {
-            main: {
-                intensity: 1.2,
-                shadow: true
-            },
-            ambient: {
-                intensity: 0.3
-            }
-        },
         show: false
     },
     series: [{
@@ -70,14 +136,14 @@ option = {
         shading: 'color',
         equation: {
             x: {
-                step: 0.05,
-                min: -3,
-                max: 3,
+                step: 1,
+                min: 0,
+                max: 99,
             },
             y: {
-                step: 0.05,
-                min: -3,
-                max: 3,
+                step: 1,
+                min: 0,
+                max: 99,
             },
             z: function (x, y) {
                 return Math.floor(Math.random()*300)
